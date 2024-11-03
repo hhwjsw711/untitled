@@ -1,12 +1,12 @@
 "use client";
 
-import { Message } from "@/app/product/Chat/Message";
-import { MessageList } from "@/app/product/Chat/MessageList";
+import { Message } from "@/app/[locale]/app/Chat/Message";
+import { MessageList } from "@/app/[locale]/app/Chat/MessageList";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useMutation, useQuery } from "convex/react";
 import { FormEvent, useState } from "react";
-import { api } from "../../../convex/_generated/api";
+import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 
 export function Chat({ viewer }: { viewer: Id<"users"> }) {

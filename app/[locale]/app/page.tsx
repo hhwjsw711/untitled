@@ -1,5 +1,5 @@
-import { Chat } from "@/app/product/Chat/Chat";
-import { ChatIntro } from "@/app/product/Chat/ChatIntro";
+import { Chat } from "@/app/[locale]/app/Chat/Chat";
+import { ChatIntro } from "@/app/[locale]/app/Chat/ChatIntro";
 import { UserMenu } from "@/components/UserMenu";
 import { api } from "@/convex/_generated/api";
 import { convexAuthNextjsToken } from "@convex-dev/auth/nextjs/server";

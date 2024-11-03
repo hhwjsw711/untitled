@@ -69,3 +69,28 @@
     @apply bg-background text-foreground;
   }
 }
+
+.hero-slide-up {
+  animation: hero-animation 1s ease-in-out
+}
+
+@keyframes hero-animation {
+  0% {
+      opacity: 0;
+      transform: translateY(16px)
+  }
+
+  to {
+      opacity: 1;
+      transform: translateY(0)
+  }
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+ .scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
