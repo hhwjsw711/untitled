@@ -9,11 +9,11 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default: "[untitled]",
-    template: "%s | [untitled]",
+    default: "Untitled | Trust in Every Trade",
+    template: "%s | Untitled",
   },
   description:
-    "A sacred place for your work-in-progress music.",
+    "Untitled is a trusted platform for secure data trading, where IP is protected and future is secured.",
   icons: {
     icon: "/share.svg",
   },

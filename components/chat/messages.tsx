@@ -1,11 +1,16 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { useStreamableText } from "@/hooks/use-streamable-text";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import type { StreamableValue } from "ai/rsc";
+import { ErrorBoundary } from "next/dist/client/components/error-boundary";
+import { ErrorFallback } from "../error-fallback";
+import { MemoizedReactMarkdown } from "../markdown";
 import { ChatAvatar } from "./chat-avatar";
 import { spinner } from "./spinner";
+import { motion } from "framer-motion";
+import { Button } from "../ui/button";
+import { useEffect, useState } from "react";
 
 function getRandomDelay(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -54,6 +59,43 @@ export function SpinnerMessage() {
   );
 }
 
+export function BotMessage({
+  content,
+}: {
+  content: string | StreamableValue<string>;
+}) {
+  const text = useStreamableText(content);
+
+  return (
+    <ErrorBoundary errorComponent={ErrorFallback}>
+      <div className="group relative flex items-start">
+        <div className="flex size-[25px] shrink-0 select-none items-center justify-center">
+          <ChatAvatar role="assistant" />
+        </div>
+
+        <div className="ml-4 flex-1 overflow-hidden pl-2 text-xs font-mono">
+          <MemoizedReactMarkdown
+            className="prose break-words dark:prose-invert leading-relaxed prose-pre:p-0 mb-2 last:mb-0 text-xs font-mono"
+            components={{
+              p({ children }) {
+                return <p>{children}</p>;
+              },
+              ol({ children }) {
+                return <ol>{children}</ol>;
+              },
+              ul({ children }) {
+                return <ul>{children}</ul>;
+              },
+            }}
+          >
+            {text}
+          </MemoizedReactMarkdown>
+        </div>
+      </div>
+    </ErrorBoundary>
+  );
+}
+
 export function BotCard({
   content,
   showAvatar = true,
@@ -72,43 +114,7 @@ export function BotCard({
   }, [content]);
 
   return (
-    <div className="group relative flex items-start">
-      <div className="flex size-[25px] shrink-0 select-none items-center justify-center">
-        {showAvatar && <ChatAvatar role="assistant" />}
-      </div>
-
-      <div
-        className={cn(
-          "ml-4 flex-1 space-y-2 overflow-hidden pl-2 text-xs font-mono leading-relaxed",
-          className,
-        )}
-      >
-        {text}
-      </div>
-    </div>
-  );
-}
-
-export function SignUpCard({
-  showAvatar = true,
-  className,
-}: {
-  showAvatar?: boolean;
-  className?: string;
-}) {
-  const [text, setText] = useState<string>();
-
-  const content =
-    "I'm just a demo assistant. To ask questions about your business, you can sign up and get started in a matter of minutes.";
-
-  useEffect(() => {
-    concatCharacter(content, (intermediateResult) => {
-      setText(intermediateResult);
-    });
-  }, []);
-
-  return (
-    <div>
+    <ErrorBoundary errorComponent={ErrorFallback}>
       <div className="group relative flex items-start">
         <div className="flex size-[25px] shrink-0 select-none items-center justify-center">
           {showAvatar && <ChatAvatar role="assistant" />}
@@ -123,7 +129,40 @@ export function SignUpCard({
           {text}
         </div>
       </div>
+    </ErrorBoundary>
+  );
+}
 
+export function SignUpCard({
+  showAvatar = true,
+  className,
+}: {
+  showAvatar?: boolean;
+  className?: string;
+}) {
+  const [text, setText] = useState<string>();
+  const content =
+    "I'm just a demo assistant. To ask questions about your business, you can sign up and get started in a matter of minutes.";
+  useEffect(() => {
+    concatCharacter(content, (intermediateResult) => {
+      setText(intermediateResult);
+    });
+  }, []);
+  return (
+    <div>
+      <div className="group relative flex items-start">
+        <div className="flex size-[25px] shrink-0 select-none items-center justify-center">
+          {showAvatar && <ChatAvatar role="assistant" />}
+        </div>
+        <div
+          className={cn(
+            "ml-4 flex-1 space-y-2 overflow-hidden pl-2 text-xs font-mono leading-relaxed",
+            className,
+          )}
+        >
+          {text}
+        </div>
+      </div>
       <motion.div
         className="ml-12 mt-4"
         initial={{ opacity: 0 }}

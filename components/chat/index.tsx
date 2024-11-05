@@ -1,43 +1,44 @@
 "use client";
 
-import { useEnterSubmit } from "@/hooks";
+import { useEnterSubmit } from "@/hooks/use-enter-submit";
+import { useScrollAnchor } from "@/hooks/use-scroll-anchor";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
-import { motion } from "framer-motion";
 import { nanoid } from "nanoid";
-import { useState } from "react";
 import { ChatEmpty } from "./chat-empty";
 import { ChatExamples } from "./chat-examples";
+import { ChatFooter } from "./chat-footer";
 import { ChatList } from "./chat-list";
-import { chatExamples } from "./examples";
-import { Footer } from "./footer";
 import { BotCard, SignUpCard, UserMessage } from "./messages";
+import { chatExamples } from "./examples";
 
 export function Chat({
   messages,
   submitMessage,
   input,
   setInput,
+  showFeedback,
 }: {
   messages: any[];
   submitMessage: any;
   input: string;
   setInput: any;
+  showFeedback: () => void;
 }) {
   const { formRef, onKeyDown } = useEnterSubmit();
-  const [isVisible, setVisible] = useState(false);
 
-  const onSubmit = (input: string) => {
+  const onSubmit = async (input: string): Promise<void> => {
     const value = input.trim();
 
     if (value.length === 0) {
-      return null;
+      return;
     }
 
     setInput("");
+    scrollToBottom();
 
-    submitMessage((message: any) => [
-      ...message,
+    submitMessage((messages: any) => [
+      ...messages,
       {
         id: nanoid(),
         role: "user",
@@ -48,7 +49,6 @@ export function Chat({
     const content = chatExamples.find(
       (example) => example.title === input,
     )?.content;
-
     if (content) {
       setTimeout(
         () =>
@@ -85,15 +85,26 @@ export function Chat({
     }
   };
 
-  const showExamples = isVisible && messages.length === 0 && !input;
+  const { messagesRef, scrollRef, visibilityRef, scrollToBottom } =
+    useScrollAnchor();
+
+  const showExamples = messages.length === 0 && !input;
 
   return (
-    <div className="relative h-[420px]">
-      <ScrollArea className="h-[335px]">
-        {messages.length ? <ChatList messages={messages} /> : <ChatEmpty />}
+    <div className="relative">
+      <ScrollArea className="md:h-[335px]" ref={scrollRef}>
+        <div ref={messagesRef}>
+          {messages.length ? (
+            <ChatList messages={messages} className="p-4 pb-8" />
+          ) : (
+            <ChatEmpty />
+          )}
+
+          <div className="w-full h-px" ref={visibilityRef} />
+        </div>
       </ScrollArea>
 
-      <div className="absolute bottom-[1px] left-[1px] right-[1px] h-[88px] border-border border-t-[1px]">
+      <div className="fixed bottom-[1px] left-[1px] right-[1px] todesktop:h-[88px] md:h-[88px] bg-background border-border border-t-[1px]">
         {showExamples && <ChatExamples onSubmit={onSubmit} />}
 
         <form
@@ -111,7 +122,7 @@ export function Chat({
             autoCorrect="off"
             value={input}
             className="h-12 min-h-12 pt-3 resize-none border-none focus-visible:ring-0"
-            placeholder="Ask [untitled] a question..."
+            placeholder="Ask Untitled a question..."
             onKeyDown={onKeyDown}
             onChange={(evt) => {
               setInput(evt.target.value);
@@ -119,20 +130,10 @@ export function Chat({
           />
         </form>
 
-        <motion.div
-          onViewportEnter={() => {
-            if (!isVisible) {
-              setVisible(true);
-            }
-          }}
-          onViewportLeave={() => {
-            if (isVisible) {
-              setVisible(false);
-            }
-          }}
-        >
-          <Footer onSubmit={() => onSubmit(input)} />
-        </motion.div>
+        <ChatFooter
+          onSubmit={() => onSubmit(input)}
+          showFeedback={showFeedback}
+        />
       </div>
     </div>
   );

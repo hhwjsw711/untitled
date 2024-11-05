@@ -1,4 +1,9 @@
-export const chatExamples = [
+export interface ChatExample {
+  title: string;
+  content: string;
+}
+
+export const chatExamples: ChatExample[] = [
   {
     title: `What's my burn rate`,
     content:

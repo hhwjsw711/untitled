@@ -1,10 +1,77 @@
-import { chatExamples } from "./examples";
+import { chatExamples } from "../chat/examples";
 import { SidebarItem } from "./sidebar-item";
 
 interface SidebarItemsProps {
   onSelect: (id: string) => void;
   chatId?: string;
 }
+
+const items = {
+  "1d": [
+    {
+      id: "1",
+      title: chatExamples.at(0)?.title || "",
+    },
+    {
+      id: "2",
+      title: chatExamples.at(2)?.title || "",
+    },
+  ],
+  "2d": [
+    {
+      id: "1",
+      title: chatExamples.at(3)?.title || "",
+    },
+    {
+      id: "2",
+      title: chatExamples.at(4)?.title || "",
+    },
+  ],
+  "7d": [
+    {
+      id: "1",
+      title: chatExamples.at(5)?.title || "",
+    },
+    {
+      id: "2",
+      title: chatExamples.at(6)?.title || "",
+    },
+    {
+      id: "3",
+      title: chatExamples.at(0)?.title || "",
+    },
+    {
+      id: "4",
+      title: chatExamples.at(2)?.title || "",
+    },
+    {
+      id: "5",
+      title: chatExamples.at(3)?.title || "",
+    },
+  ],
+  "30d": [
+    {
+      id: "1",
+      title: chatExamples.at(2)?.title || "",
+    },
+    {
+      id: "2",
+      title: chatExamples.at(3)?.title || "",
+    },
+    {
+      id: "3",
+      title: chatExamples.at(4)?.title || "",
+    },
+    {
+      id: "4",
+      title: chatExamples.at(5)?.title || "",
+    },
+    {
+      id: "5",
+      title: chatExamples.at(6)?.title || "",
+    },
+  ],
+};
 
 const formatRange = (key: string) => {
   switch (key) {
@@ -21,76 +88,9 @@ const formatRange = (key: string) => {
   }
 };
 
-const items = {
-  "1d": [
-    {
-      id: "1",
-      title: chatExamples.at(0)!.title,
-    },
-    {
-      id: "2",
-      title: chatExamples.at(2)!.title,
-    },
-  ],
-  "2d": [
-    {
-      id: "1",
-      title: chatExamples.at(3)!.title,
-    },
-    {
-      id: "2",
-      title: chatExamples.at(4)!.title,
-    },
-  ],
-  "7d": [
-    {
-      id: "1",
-      title: chatExamples.at(5)!.title,
-    },
-    {
-      id: "2",
-      title: chatExamples.at(6)!.title,
-    },
-    {
-      id: "3",
-      title: chatExamples.at(0)!.title,
-    },
-    {
-      id: "4",
-      title: chatExamples.at(2)!.title,
-    },
-    {
-      id: "5",
-      title: chatExamples.at(3)!.title,
-    },
-  ],
-  "30d": [
-    {
-      id: "1",
-      title: chatExamples.at(2)!.title,
-    },
-    {
-      id: "2",
-      title: chatExamples.at(3)!.title,
-    },
-    {
-      id: "3",
-      title: chatExamples.at(4)!.title,
-    },
-    {
-      id: "4",
-      title: chatExamples.at(5)!.title,
-    },
-    {
-      id: "5",
-      title: chatExamples.at(6)!.title,
-    },
-  ],
-};
-
 export function SidebarItems({ onSelect }: SidebarItemsProps) {
   return (
-    <div className="overflow-auto relative h-full md:h-[410px] mt-4 scrollbar-hide p-4 pt-0 pb-[70px] flex flex-col space-y-6">
+    <div className="overflow-auto relative h-screen md:h-[410px] mt-16 scrollbar-hide p-4 pt-0 pb-[50px] flex flex-col space-y-6">
       {!Object.keys(items).length && (
         <div className="flex flex-col justify-center items-center h-full">
           <div className="flex flex-col items-center -mt-12 text-xs space-y-1">
@@ -112,7 +112,7 @@ export function SidebarItems({ onSelect }: SidebarItemsProps) {
             )}
 
             <div className="mt-1">
-              {section?.map((chat: any) => {
+              {section?.map((chat) => {
                 return (
                   <SidebarItem key={chat.id} chat={chat} onSelect={onSelect} />
                 );

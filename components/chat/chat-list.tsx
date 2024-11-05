@@ -1,16 +1,19 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+
 type Props = {
   messages: any;
+  className?: string;
 };
 
-export function ChatList({ messages }: Props) {
+export function ChatList({ messages, className }: Props) {
   if (!messages.length) {
     return null;
   }
 
   return (
-    <div className="flex flex-col  p-4 pb-8">
+    <div className={cn("flex flex-col select-text", className)}>
       {messages
         .filter((tool: any) => tool.display !== undefined)
         .map((message: any, index: number) => (

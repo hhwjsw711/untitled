@@ -26,15 +26,13 @@ export function Hero() {
         </Link>
 
         <h1 className="text-[30px] md:text-[90px] font-medium mt-6 leading-none">
-          A sacred place
-          <br /> for your
-          <br /> work-in-progress music.
+          Trust in
+          <br /> Every Trade
         </h1>
 
         <p className="mt-4 md:mt-6 max-w-[600px] text-[#878787]">
-          An all-in-one tool for freelancers, contractors, consultants, and
-          micro businesses to monitor financial health, time-track projects,
-          store files, and send invoices.
+          Untitled is a trusted platform for secure data trading, where IP is
+          protected and future is secured.
         </p>
 
         <div className="mt-8">

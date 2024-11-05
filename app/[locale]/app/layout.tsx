@@ -1,3 +1,4 @@
+import { AssistantModal } from "@/components/assistant/assistant-modal";
 import ConvexClientProvider from "@/components/ConvexClientProvider";
 import { cn } from "@/lib/utils";
 import { ChatBubbleIcon, HomeIcon, ReaderIcon } from "@radix-ui/react-icons";
@@ -11,6 +12,7 @@ export default function ProductLayout({ children }: { children: ReactNode }) {
         <ProductMenu />
         {children}
       </div>
+      <AssistantModal />
     </ConvexClientProvider>
   );
 }

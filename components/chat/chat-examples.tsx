@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRef } from "react";
+import { MutableRefObject, useRef } from "react";
 import { useDraggable } from "react-use-draggable-scroll";
 import { chatExamples } from "./examples";
 
@@ -22,23 +22,19 @@ const itemVariant = {
   show: { y: 0, opacity: 1 },
 };
 
-export function ChatExamples({
-  onSubmit,
-}: {
-  onSubmit: (title: string) => void;
-}) {
-  const ref = useRef();
-  const { events } = useDraggable(ref as any);
+export function ChatExamples({ onSubmit }: { onSubmit: (input: string) => Promise<void> }) {
+  const ref = useRef<HTMLDivElement>(null) as MutableRefObject<HTMLDivElement>;
+  const { events } = useDraggable(ref);
 
   const totalLength = chatExamples.reduce((accumulator, currentString) => {
-    return accumulator + currentString.title.length * 8.2 + 50;
+    return accumulator + currentString.title.length * 8.2 + 20;
   }, 0);
 
   return (
     <div
-      className="absolute z-10 bottom-[100px] left-0 right-0 overflow-scroll scrollbar-hide cursor-grabbing"
+      className="absolute z-10 bottom-[100px] left-0 right-0 overflow-scroll scrollbar-hide cursor-grabbing hidden md:block"
       {...events}
-      ref={ref as any}
+      ref={ref}
     >
       <motion.ul
         variants={listVariant}
@@ -48,14 +44,10 @@ export function ChatExamples({
         style={{ width: `${totalLength}px` }}
       >
         {chatExamples.map((example) => (
-          <button
-            key={example.title}
-            type="button"
-            onClick={() => onSubmit(example.title)}
-          >
+          <button key={example.title} type="button" onClick={() => onSubmit(example.title)}>
             <motion.li
               variants={itemVariant}
-              className="font-mono text-[#878787] text-xs bg-[#1D1D1D] px-3 py-2 rounded-full cursor-default"
+              className="font-mono text-[#878787] bg-[#F2F1EF] text-xs dark:bg-[#1D1D1D] px-3 py-2 rounded-full cursor-default"
             >
               {example.title}
             </motion.li>

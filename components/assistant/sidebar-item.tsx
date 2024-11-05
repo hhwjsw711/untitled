@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 interface SidebarItemProps {
   chat: any;
-  onSelect: (message: string) => void;
+  onSelect: (id: string) => void;
 }
 
 export function SidebarItem({ chat, onSelect }: SidebarItemProps) {
