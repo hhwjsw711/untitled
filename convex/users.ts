@@ -15,3 +15,13 @@ export const viewer = query({
     return user;
   },
 });
+
+export const getUserOrNull = query({
+  handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+    if (userId === null) {
+      return null;
+    }
+    return await ctx.db.get(userId);
+  },
+});

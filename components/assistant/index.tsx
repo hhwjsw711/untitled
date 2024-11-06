@@ -4,7 +4,6 @@ import { Chat } from "@/components/chat";
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { AssistantFeedback } from "./feedback";
 import { Header } from "./header";
 import { SidebarList } from "./sidebar-list";
 import { chatExamples } from "../chat/examples";
@@ -13,7 +12,6 @@ import { UserMessage } from "../chat/messages";
 
 export function Assistant() {
   const [isExpanded, setExpanded] = useState(false);
-  const [showFeedback, setShowFeedback] = useState(false);
   const [messages, setMessages] = useState<any[]>([]);
   const [input, setInput] = useState("");
 
@@ -54,9 +52,6 @@ export function Assistant() {
 
   return (
     <div className="overflow-hidden p-0 h-full w-full todesktop:max-w-[760px] md:max-w-[760px] md:h-[480px] todesktop:h-[480px]">
-      {showFeedback && (
-        <AssistantFeedback onClose={() => setShowFeedback(false)} />
-      )}
 
       <SidebarList
         setExpanded={setExpanded}
@@ -72,7 +67,6 @@ export function Assistant() {
         setInput={setInput}
         input={input}
         submitMessage={setMessages}
-        showFeedback={() => setShowFeedback(true)}
       />
     </div>
   );
