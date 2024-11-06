@@ -1,8 +1,8 @@
-export default async function ProductPage() {
+export default async function AppPage() {
   return (
     <>
       <div>
-        <div className="h-[530px] mb-4">你好</div>
+        <div className="h-[530px] mb-4">Overview</div>
       </div>
     </>
   );
